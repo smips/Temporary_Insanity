@@ -28,10 +28,30 @@
   <ItemGroup>
     <Folder Include="assets\" />
     <Folder Include="src\" />
+    <Folder Include="src\Engine\" />
+    <Folder Include="src\World\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Engine\DataGrinder.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\libtcodpy.py" />
     <Compile Include="src\TI.py" />
+    <Compile Include="src\World\Actor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\World\Prop.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\World\GameObject.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\World\Item.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\World\Tile.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\arial10x10.png" />
