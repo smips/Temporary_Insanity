@@ -1,4 +1,6 @@
-class Item(object):
+﻿import GameObject
+
+class Item(GameObject.GameObject):
     """description of class"""
 
 

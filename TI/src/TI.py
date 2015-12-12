@@ -5,6 +5,7 @@ import os, math, random
 
 sys.path.insert(0, os.path.realpath(__file__).replace("TI.py","World"))
 sys.path.insert(0, os.path.realpath(__file__).replace("TI.py","Engine"))
+sys.path.insert(0, os.path.realpath(__file__).replace("TI.py","Scripts"))
 
 import GameObject
 import Tile
@@ -12,6 +13,7 @@ import DataGrinder
 import Actor
 import Prop
 import Camera
+import ScriptHandler
 
 DEBUG = 1
 
@@ -49,7 +51,11 @@ def handle_keys():
  
     elif key.vk == libtcod.KEY_ESCAPE:
         return True  #exit game
- 
+    
+    #Call a test script
+    elif key.vk == libtcod.KEY_KP5:
+        ScriptHandler.CallExternalScript(1)
+        
     #movement keys
     if key.vk == (libtcod.KEY_KP8):
         player.move(0,-1, map)
@@ -78,6 +84,7 @@ def handle_keys():
         return False
  
 def update():
+    #ScriptHandler.CallExternalScript(1)
     pass
 
 def render():
@@ -102,9 +109,9 @@ def make_map():
     for x in range(MAP_WIDTH):
         for y in range(MAP_HEIGHT):
             map[x][y] = Tile.Tile(x, y, 1)
-            if random.randint(0,0):
-                map[x][y].prop = Prop.Prop(x,y,1,map)
-                objects.append(map[x][y].prop)
+            #if random.randint(0,0):
+                #map[x][y].prop = Prop.Prop(x,y,1,map)
+                #objects.append(map[x][y].prop)
             objects.append(map[x][y])
 
 #############################################

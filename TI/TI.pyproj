@@ -29,6 +29,7 @@
     <Folder Include="assets\" />
     <Folder Include="src\" />
     <Folder Include="src\Engine\" />
+    <Folder Include="src\Scripts\" />
     <Folder Include="src\World\" />
   </ItemGroup>
   <ItemGroup>
@@ -38,7 +39,13 @@
     <Compile Include="src\Engine\DataGrinder.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\Engine\ScriptHandler.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\libtcodpy.py" />
+    <Compile Include="src\Scripts\debug.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\TI.py" />
     <Compile Include="src\World\Actor.py">
       <SubType>Code</SubType>

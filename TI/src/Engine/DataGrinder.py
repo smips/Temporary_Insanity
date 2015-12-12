@@ -41,6 +41,30 @@ def execute_query(query):
 
     return data
 
+def get_script(ID):
+    script_data = {}
+    query = 'SELECT * FROM Scripting WHERE ID = ' + str(ID)
+    data = execute_query(query)
+    script_data['Name'] = data[0]['SCRIPT_NAME']
+    script_data['Arg_Ref'] = data[0]['ARG_REF']
+    return script_data
+
+def get_script_args(ARG_REF):
+    args = {}
+    query = 'SELECT ARG_NAME FROM Scripting_Args_Ref WHERE ARG_REF = "' + ARG_REF + '"'
+    arg_names = execute_query(query)
+    for name in arg_names:
+        query = 'SELECT ' + name['ARG_NAME'] + ' FROM Scripting_Args WHERE ARG_REF = "' + ARG_REF + '"'
+        arg = execute_query(query)
+        args[name['ARG_NAME']] = arg[0][name['ARG_NAME']]
+    return args
+
+def get_script_data(ID):
+    script = get_script(ID)
+    temp = script['Arg_Ref']
+    args = get_script_args(temp)
+    return (script, args)
+
 def get_color(name):
     if name == '':
         return libtcod.BKGND_NONE
