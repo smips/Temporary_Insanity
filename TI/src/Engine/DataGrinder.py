@@ -2,7 +2,8 @@
 import libtcodpy as libtcod
 import  os, random
 
-db_path = 'C:\\Temporary_Insanity\\TI\\GameData.db'
+#db_path = 'C:\\Temporary_Insanity\\TI\\GameData.db'
+db_path = 'I:\\TI\\TI\\GameData.db'
 
 con = None
 cur = None

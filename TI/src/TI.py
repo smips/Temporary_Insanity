@@ -54,7 +54,9 @@ def handle_keys():
     
     #Call a test script
     elif key.vk == libtcod.KEY_KP5:
-        ScriptHandler.CallExternalScript(1)
+        args = {}
+        args['player'] = player
+        ScriptHandler.CallExternalScript(1, args)
         
     #movement keys
     if key.vk == (libtcod.KEY_KP8):
