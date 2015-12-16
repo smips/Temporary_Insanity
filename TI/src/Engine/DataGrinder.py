@@ -2,8 +2,8 @@
 import libtcodpy as libtcod
 import  os, random
 
-#db_path = 'C:\\Temporary_Insanity\\TI\\GameData.db'
-db_path = 'I:\\TI\\TI\\GameData.db'
+db_path = 'C:\\Temporary_Insanity\\TI\\GameData.db'
+#db_path = 'I:\\TI\\TI\\GameData.db'
 
 con = None
 cur = None
@@ -74,10 +74,10 @@ def get_color(name):
         data = execute_query(query)
         return libtcod.Color(int(data[0]['R']), int(data[0]['G']), int(data[0]['B']))
 
-def get_color_varied(name):
+def get_color_varied(name, variance):
     query = 'SELECT R,G,B FROM Colors WHERE Name = "' + name + '"'
     data = execute_query(query)
-    return libtcod.Color(max(0, int(data[0]['R']) + random.randint(-5,5)), max(0, int(data[0]['G']) + random.randint(-5,5)), max(0, int(data[0]['B']) + random.randint(-5,5)))
+    return libtcod.Color(max(0, int(data[0]['R']) + random.randint(-variance,variance)), max(0, int(data[0]['G']) + random.randint(-variance,variance)), max(0, int(data[0]['B']) + random.randint(-variance,variance)))
 
 def get_tile_data(id):
     tile_data = {}
@@ -87,8 +87,8 @@ def get_tile_data(id):
 
     tile_data['Char'] = data[0]['Char']
     if data[0]['Varied_Color']:
-        tile_data['Bcolor'] = get_color_varied(data[0]['Bcolor'])
-        tile_data['Fcolor'] = get_color_varied(data[0]['Fcolor'])
+        tile_data['Bcolor'] = get_color_varied(data[0]['Bcolor'], data[0]['Varied_Color'])
+        tile_data['Fcolor'] = get_color_varied(data[0]['Fcolor'], data[0]['Varied_Color'])
     else:
         tile_data['Bcolor'] = get_color(data[0]['Bcolor'])
         tile_data['Fcolor'] = get_color(data[0]['Fcolor'])
@@ -124,5 +124,38 @@ def get_prop_data(id):
     prop_data['Block_sight'] = data[0]['Block_sight']
 
     return prop_data
+
+def get_map_data(id):
+    map_data = {}
+
+    query = 'SELECT * FROM Maps Where ID = ' + str('id')
+
+    data = execute_query(query)
+
+    data = data[0]
+
+    map_data['Name'] = data['Name']
+    map_data['Width'] = data['Width']
+    map_data['Height'] = data['Height']
+    map_data['Size_Variance'] = data['Size_Variance']
+    map_data['Num_Rooms'] = data['Num_Rooms']
+    map_data['Script_ID'] = data['Script_ID']
+    map_data['Tile_IDs'] = get_tile_ref_data(data['Tile_Ref'])
+
+    return map_data
+
+def get_tile_ref_data(TILE_REF):
+    tile_ids = []
+
+    query = 'SELECT * FROM Map_Tile_Refs WHERE Tile_Ref = "' + TILE_REF + '"'
+
+    data = execute_query(query)
+
+    for row in data:
+        tile_ids.append(row['Tile_ID'])
+
+    return tile_ids
+
+
 
     

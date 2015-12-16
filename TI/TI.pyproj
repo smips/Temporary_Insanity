@@ -39,11 +39,17 @@
     <Compile Include="src\Engine\DataGrinder.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\Engine\Map.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\Engine\ScriptHandler.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\libtcodpy.py" />
     <Compile Include="src\Scripts\debug.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Scripts\DEBUG_MAP.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\TI.py" />

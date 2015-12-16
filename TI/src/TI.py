@@ -7,13 +7,8 @@ sys.path.insert(0, os.path.realpath(__file__).replace("TI.py","World"))
 sys.path.insert(0, os.path.realpath(__file__).replace("TI.py","Engine"))
 sys.path.insert(0, os.path.realpath(__file__).replace("TI.py","Scripts"))
 
-import GameObject
-import Tile
-import DataGrinder
-import Actor
-import Prop
-import Camera
-import ScriptHandler
+import GameObject,Tile,DataGrinder,Actor,Prop,Camera,ScriptHandler
+import Map
 
 DEBUG = 1
 
@@ -28,10 +23,7 @@ SCREEN_HEIGHT = 50
 DISPLAY_WIDTH = 60
 DISPLAY_HEIGHT = 50
 
-MAP_WIDTH = 80
-MAP_HEIGHT = 80
-
-map = [[0 for x in range(MAP_HEIGHT)] for x in range(MAP_WIDTH)]
+#map = [[0 for x in range(MAP_HEIGHT)] for x in range(MAP_WIDTH)]
  
 LIMIT_FPS = 60  #60 frames-per-second maximum
 
@@ -86,35 +78,26 @@ def handle_keys():
         return False
  
 def update():
-    #ScriptHandler.CallExternalScript(1)
     pass
 
 def render():
     global map, camera, player, SCREEN_WIDTH, SCREEN_HEIGHT
-    camera.move_camera(player.x, player.y, MAP_WIDTH, MAP_HEIGHT)
+    camera.move_camera(player.x, player.y, map.width, map.height)
     libtcod.console_clear(0)
     libtcod.console_set_default_foreground(0, libtcod.white)
-    i = 1
+
+    #libtcod.map_compute_fov(map.fov_map, player.x, player.y, 10, True, 0)
+    
     for x in range(DISPLAY_WIDTH):
         for y in range(DISPLAY_HEIGHT):
             (map_x, map_y) = (camera.x + x, camera.y + y)
-            map[map_x][map_y].draw(camera) 
+            map.map[map_x][map_y].draw(camera) 
 
     libtcod.console_print(0, 0, 0, 'FPS: ' + str(libtcod.sys_get_fps()))
     libtcod.console_flush()
 
 def input():
     return handle_keys()
-
-def make_map():
-    global map, objects,MAP_HEIGHT,MAP_WIDTH
-    for x in range(MAP_WIDTH):
-        for y in range(MAP_HEIGHT):
-            map[x][y] = Tile.Tile(x, y, 1)
-            #if random.randint(0,0):
-                #map[x][y].prop = Prop.Prop(x,y,1,map)
-                #objects.append(map[x][y].prop)
-            objects.append(map[x][y])
 
 #############################################
 # Initialization & Main Loop
@@ -125,9 +108,9 @@ libtcod.console_set_custom_font('assets/arial10x10.png', libtcod.FONT_TYPE_GREYS
 libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'python/libtcod tutorial', False)
 libtcod.sys_set_fps(LIMIT_FPS)
 
-make_map()
-player = Actor.Actor(MAP_WIDTH/2, MAP_HEIGHT/2, 1, map)
-objects.append(player)
+map = Map.Map(1)
+player = Actor.Actor(map.width/2, map.height/2, 1, map)
+map.objects.append(player)
 camera = Camera.Camera(player.x, player.y, DISPLAY_WIDTH, DISPLAY_HEIGHT)
 dprint('Initialization complete')
  

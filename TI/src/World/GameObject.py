@@ -10,6 +10,7 @@ class GameObject(object):
         self.bcolor = bcolor
 
     def draw(self, camera):
+        #if libtcod.map_is_in_fov(map.fov_map, self.x, self.y):
         (t_x, t_y) = camera.to_camera_coordinates(self.x, self.y)
         libtcod.console_put_char_ex(0, t_x, t_y, str(self.char), self.fcolor, self.bcolor)
 

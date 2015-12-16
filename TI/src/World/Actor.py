@@ -10,12 +10,13 @@ class Actor(GameObject.GameObject):
 
         actor_data = DataGrinder.get_actor_data(ID)
         self.char = actor_data['Char']
-        self.bcolor = map[self.x][self.y].bcolor
+        self.bcolor = map.map[self.x][self.y].bcolor
         self.fcolor = actor_data['Fcolor']
 
-        map[x][y].actor = self
+        map.map[x][y].actor = self
 
-    def move(self, dx, dy, map):
+    def move(self, dx, dy, map_object):
+        map = map_object.map
         new_x = self.x + dx
         new_y = self.y + dy
         blocked = map[new_x][new_y].solid
