@@ -36,6 +36,9 @@
     <Compile Include="src\Engine\Camera.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="src\Engine\Cartographer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\Engine\DataGrinder.py">
       <SubType>Code</SubType>
     </Compile>

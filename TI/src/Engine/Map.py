@@ -19,4 +19,7 @@ class Map(object):
         self.fov_map  = libtcod.map_new(self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):
-                libtcod.map_set_properties(self.fov_map, x, y, not self.map[x][y].block_sight, not self.map[x][y].solid)
+                tile_block_sight = self.map[x][y].block_sight
+                if self.map[x][y].prop != None:
+                    tile_block_sight = tile_block_sight + self.map[x][y].prop.block_sight
+                libtcod.map_set_properties(self.fov_map, x, y, not tile_block_sight, not self.map[x][y].solid)

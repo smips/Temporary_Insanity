@@ -23,9 +23,11 @@ SCREEN_HEIGHT = 50
 DISPLAY_WIDTH = 60
 DISPLAY_HEIGHT = 50
 
-#map = [[0 for x in range(MAP_HEIGHT)] for x in range(MAP_WIDTH)]
+FOV_RECOMPUTE = True
  
 LIMIT_FPS = 60  #60 frames-per-second maximum
+
+FPS_CONSOLE = libtcod.console_new(10,1)
 
 def dprint(arg):
     global DEBUG
@@ -33,7 +35,7 @@ def dprint(arg):
         print(arg) 
  
 def handle_keys():
-    global player, map
+    global player, map, FOV_RECOMPUTE
 
     key = libtcod.console_check_for_keypress(True)
  
@@ -53,27 +55,36 @@ def handle_keys():
     #movement keys
     if key.vk == (libtcod.KEY_KP8):
         player.move(0,-1, map)
+        FOV_RECOMPUTE = True
  
     elif key.vk == (libtcod.KEY_KP2):
         player.move(0,1, map)
+        FOV_RECOMPUTE = True
  
     elif key.vk == (libtcod.KEY_KP4):
         player.move(-1,0, map)
+        FOV_RECOMPUTE = True
  
     elif key.vk == (libtcod.KEY_KP6):
         player.move(1,0, map)
+        FOV_RECOMPUTE = True
     
     elif key.vk == (libtcod.KEY_KP7):
         player.move(-1,-1, map)
+        FOV_RECOMPUTE = True
  
     elif key.vk == (libtcod.KEY_KP9):
         player.move(1,-1, map)
+        FOV_RECOMPUTE = True
  
     elif key.vk == (libtcod.KEY_KP1):
         player.move(-1,1, map)
+        FOV_RECOMPUTE = True
  
     elif key.vk == (libtcod.KEY_KP3):
         player.move(1,1, map)
+        FOV_RECOMPUTE = True
+
     if key.vk != libtcod.KEY_NONE:
         return False
  
@@ -81,20 +92,28 @@ def update():
     pass
 
 def render():
-    global map, camera, player, SCREEN_WIDTH, SCREEN_HEIGHT
+    global map, camera, player, SCREEN_WIDTH, SCREEN_HEIGHT, FOV_RECOMPUTE
     camera.move_camera(player.x, player.y, map.width, map.height)
-    libtcod.console_clear(0)
     libtcod.console_set_default_foreground(0, libtcod.white)
 
-    #libtcod.map_compute_fov(map.fov_map, player.x, player.y, 10, True, 0)
-    
-    for x in range(DISPLAY_WIDTH):
-        for y in range(DISPLAY_HEIGHT):
-            (map_x, map_y) = (camera.x + x, camera.y + y)
-            map.map[map_x][map_y].draw(camera) 
+    temp_player_x, temp_player_y = camera.to_camera_coordinates(player.x, player.y)
 
-    libtcod.console_print(0, 0, 0, 'FPS: ' + str(libtcod.sys_get_fps()))
+    if FOV_RECOMPUTE:
+        libtcod.console_clear(0)
+        libtcod.map_compute_fov(map.fov_map, player.x, player.y, 10, True, 2)
+        FOV_RECOMPUTE = False
+    
+        for x in range(DISPLAY_WIDTH):
+            for y in range(DISPLAY_HEIGHT):
+                (map_x, map_y) = (camera.x + x, camera.y + y)
+                map.map[map_x][map_y].draw(camera, map) 
+    
+    libtcod.console_print(FPS_CONSOLE, 0, 0, 'FPS: ' + str(libtcod.sys_get_fps()))
+    libtcod.console_blit(FPS_CONSOLE, 0, 0, 10, 1, 0, 0, 0)
     libtcod.console_flush()
+
+
+    
 
 def input():
     return handle_keys()

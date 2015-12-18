@@ -1,5 +1,6 @@
 ﻿import GameObject
 import DataGrinder
+import libtcodpy as libtcod
 
 class Tile(GameObject.GameObject):
     """Tiles for a game map. May contain 1 prop, 1 actor, 1 item"""
@@ -16,15 +17,19 @@ class Tile(GameObject.GameObject):
         self.bcolor = tile_data['Bcolor']
         self.solid = tile_data['Solid']
         self.block_sight = tile_data['Block_sight']
+        self.explored = False
 
-    def draw(self, camera):
-        super(Tile, self).draw(camera)
-        if self.actor != None:
-            self.actor.draw(camera)
-            return
-        elif self.item != None:
-            self.item.draw(camera)
-            return
-        elif self.prop != None:
-            self.prop.draw(camera)
-            return
+    def draw(self, camera, map):
+        if libtcod.map_is_in_fov(map.fov_map,self.x,self.y):
+            self.explored = True
+        if self.explored:
+            super(Tile, self).draw(camera, map)
+            if self.actor != None:
+                self.actor.draw(camera, map)
+                return
+            elif self.item != None:
+                self.item.draw(camera, map)
+                return
+            elif self.prop != None:
+                self.prop.draw(camera, map)
+                return
