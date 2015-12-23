@@ -14,7 +14,7 @@ class Map(object):
         self.num_rooms = map_data['Num_Rooms']
         self.script_id = map_data['Script_ID']
         self.tile_ids = map_data['Tile_IDs']
-        (self.map, self.objects) = ScriptHandler.CallExternalScript(self.script_id, map_data)
+        (self.map, self.objects, self.rooms) = ScriptHandler.CallExternalScript(self.script_id, map_data)
 
         self.fov_map  = libtcod.map_new(self.width, self.height)
         for x in range(self.width):

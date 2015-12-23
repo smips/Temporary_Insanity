@@ -19,17 +19,18 @@ class Tile(GameObject.GameObject):
         self.block_sight = tile_data['Block_sight']
         self.explored = False
 
-    def draw(self, camera, map):
+    def draw(self, camera, map, distance):
         if libtcod.map_is_in_fov(map.fov_map,self.x,self.y):
             self.explored = True
         if self.explored:
-            super(Tile, self).draw(camera, map)
+            super(Tile, self).draw(camera, map, distance)
             if self.actor != None:
-                self.actor.draw(camera, map)
+                if libtcod.map_is_in_fov(map.fov_map, self.actor.x, self.actor.y):
+                    self.actor.draw(camera, map, distance)
                 return
             elif self.item != None:
-                self.item.draw(camera, map)
+                self.item.draw(camera, map, distance)
                 return
             elif self.prop != None:
-                self.prop.draw(camera, map)
+                self.prop.draw(camera, map, distance)
                 return

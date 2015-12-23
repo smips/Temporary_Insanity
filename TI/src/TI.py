@@ -100,18 +100,23 @@ def render():
 
     if FOV_RECOMPUTE:
         libtcod.console_clear(0)
-        libtcod.map_compute_fov(map.fov_map, player.x, player.y, 10, True, 2)
+        libtcod.map_compute_fov(map.fov_map, player.x, player.y, 10, True, 1)
         FOV_RECOMPUTE = False
     
         for x in range(DISPLAY_WIDTH):
             for y in range(DISPLAY_HEIGHT):
                 (map_x, map_y) = (camera.x + x, camera.y + y)
-                map.map[map_x][map_y].draw(camera, map) 
+                distance = get_distance(player.x, map_x, player.y, map_y)
+                map.map[map_x][map_y].draw(camera, map, distance) 
     
     libtcod.console_print(FPS_CONSOLE, 0, 0, 'FPS: ' + str(libtcod.sys_get_fps()))
     libtcod.console_blit(FPS_CONSOLE, 0, 0, 10, 1, 0, 0, 0)
     libtcod.console_flush()
 
+def get_distance(x1, x2, y1, y2):
+    dx = x2 - x1
+    dy = y2 - y1
+    return int(math.sqrt(dx ** 2 + dy ** 2))
 
     
 
@@ -128,7 +133,7 @@ libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'python/libtcod tutorial'
 libtcod.sys_set_fps(LIMIT_FPS)
 
 map = Map.Map(1)
-player = Actor.Actor(map.width/2, map.height/2, 1, map)
+player = Actor.Actor(map.rooms[0].center.x, map.rooms[0].center.y, 1, map)
 map.objects.append(player)
 camera = Camera.Camera(player.x, player.y, DISPLAY_WIDTH, DISPLAY_HEIGHT)
 dprint('Initialization complete')
