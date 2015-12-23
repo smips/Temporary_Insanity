@@ -2,8 +2,8 @@
 import libtcodpy as libtcod
 import  os, random
 
-db_path = 'C:\\Temporary_Insanity\\TI\\GameData.db'
-#db_path = 'I:\\TI\\TI\\GameData.db'
+#db_path = 'C:\\Temporary_Insanity\\TI\\GameData.db'
+db_path = 'I:\\TI\\TI\\GameData.db'
 
 con = None
 cur = None
@@ -103,10 +103,12 @@ def get_actor_data(id):
     query = 'SELECT * FROM GameObject_Actors WHERE ID = ' + str(id)
     
     data = execute_query(query)
-
+    
+    actor_data['Name'] = data[0]['Name']
     actor_data['Char'] = data[0]['Char']
     actor_data['Bcolor'] = get_color(data[0]['Bcolor'])
     actor_data['Fcolor'] = get_color(data[0]['Fcolor'])
+    actor_data['AI_Script_Ref'] = data[0]['AI_Script_Ref']
 
     return actor_data
 

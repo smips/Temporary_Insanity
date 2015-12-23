@@ -1,5 +1,6 @@
 ﻿import GameObject
 import DataGrinder
+import ScriptHandler
 import libtcodpy as libtcod
 
 class Actor(GameObject.GameObject):
@@ -9,9 +10,11 @@ class Actor(GameObject.GameObject):
         self.y = y
 
         actor_data = DataGrinder.get_actor_data(ID)
+        self.name = actor_data['Name']
         self.char = actor_data['Char']
         self.bcolor = map.map[self.x][self.y].bcolor
         self.fcolor = actor_data['Fcolor']
+        self.ai_script = actor_data['AI_Script_Ref']
 
         map.map[x][y].actor = self
 
@@ -30,4 +33,6 @@ class Actor(GameObject.GameObject):
             super(Actor, self).move(dx, dy)
             map[self.x][self.y].actor = self
             self.bcolor = map[self.x][self.y].bcolor
-            print(str(self.x))
+
+    def tick(self, map):
+        return ScriptHandler.CallExternalScript(self.ai_script, {'self':self, 'map':map})

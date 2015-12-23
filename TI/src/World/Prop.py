@@ -10,6 +10,7 @@ class Prop(GameObject.GameObject):
         prop_data = DataGrinder.get_prop_data(ID)
 
         self.char = prop_data['Char']
+        self.name = prop_data['Name']
         self.fcolor = prop_data['Fcolor']
         self.bcolor = map[x][y].bcolor
         self.solid = prop_data['Solid']

@@ -49,6 +49,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\libtcodpy.py" />
+    <Compile Include="src\Scripts\AI_BASIC_FUNCTIONS.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Scripts\AI_BASIC_MELEE.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\Scripts\AI_PLAYER.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\Scripts\debug.py">
       <SubType>Code</SubType>
     </Compile>

@@ -12,7 +12,7 @@ def call(args):
         for y in range(args['Height']):
             #Populate entire map with walls
             map[x][y] = Tile.Tile(x, y, args['Tile_IDs'][1])
-            objects.append(map[x][y])
+            #objects.append(map[x][y])
 
     rooms = []
     num_rooms = args['Num_Rooms']
@@ -20,7 +20,7 @@ def call(args):
         success = True    
         rand_x = args['Size_Variance'] + random.randint(-4,4)
         rand_y = args['Size_Variance'] + random.randint(-4,4)
-        rect = Cartographer.Rectangle(Cartographer.get_random_point(1,args['Width'] - rand_x,1,args['Height'] - rand_y), rand_x, rand_y)
+        rect = Cartographer.Rectangle(Cartographer.get_random_point(1,args['Width'] - rand_x,1,args['Height'] - rand_y - 1), rand_x, rand_y)
         for room in rooms:
             if rect.intersects(room):
                 if num_rooms < args['Num_Rooms'] + 3:

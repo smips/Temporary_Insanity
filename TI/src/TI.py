@@ -35,7 +35,7 @@ def dprint(arg):
         print(arg) 
  
 def handle_keys():
-    global player, map, FOV_RECOMPUTE
+    global player, map, FOV_RECOMPUTE, enemy
 
     key = libtcod.console_check_for_keypress(True)
  
@@ -48,9 +48,8 @@ def handle_keys():
     
     #Call a test script
     elif key.vk == libtcod.KEY_KP5:
-        args = {}
-        args['player'] = player
-        ScriptHandler.CallExternalScript(1, args)
+        enemy.tick(map)
+        FOV_RECOMPUTE = True
         
     #movement keys
     if key.vk == (libtcod.KEY_KP8):
@@ -100,7 +99,7 @@ def render():
 
     if FOV_RECOMPUTE:
         libtcod.console_clear(0)
-        libtcod.map_compute_fov(map.fov_map, player.x, player.y, 10, True, 1)
+        libtcod.map_compute_fov(map.fov_map, player.x, player.y, 7, True, 1)
         FOV_RECOMPUTE = False
     
         for x in range(DISPLAY_WIDTH):
@@ -120,8 +119,13 @@ def get_distance(x1, x2, y1, y2):
 
     
 
-def input():
-    return handle_keys()
+def tick():
+    global map, FOV_RECOMPUTE
+    for object in map.objects:
+        if object.name == 'Player':
+            FOV_RECOMPUTE = object.tick(map)
+        else:
+            object.tick(map)
 
 #############################################
 # Initialization & Main Loop
@@ -134,15 +138,18 @@ libtcod.sys_set_fps(LIMIT_FPS)
 
 map = Map.Map(1)
 player = Actor.Actor(map.rooms[0].center.x, map.rooms[0].center.y, 1, map)
+enemy = Actor.Actor(map.rooms[0].center.x + 2, map.rooms[0].center.y + 2, 2, map)
 map.objects.append(player)
+map.objects.append(enemy)
 camera = Camera.Camera(player.x, player.y, DISPLAY_WIDTH, DISPLAY_HEIGHT)
 dprint('Initialization complete')
  
 while not libtcod.console_is_window_closed():
+    #Tick is currently causing the game to run in real time......... FIX ASAP!!!
     update()
     render()
-    exit = input()
-    
+    tick()
+    exit = False
     #exit game if needed
     if exit:
         break

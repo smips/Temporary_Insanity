@@ -10,14 +10,13 @@ class GameObject(object):
         self.bcolor = bcolor
 
     def draw(self, camera, map, distance):
-        fov_damping = 16
+        fov_damping = 20
         if not libtcod.map_is_in_fov(map.fov_map, self.x, self.y):
             f_color = self.fcolor * libtcod.dark_gray
             b_color = self.bcolor * libtcod.dark_gray
         else:
             f_color = self.fcolor
             b_color = self.bcolor * libtcod.Color(255 - (distance * fov_damping), 255 - (distance * fov_damping),255 - (distance * fov_damping))
-            print(str(distance))
         (t_x, t_y) = camera.to_camera_coordinates(self.x, self.y)
         libtcod.console_put_char_ex(0, t_x, t_y, str(self.char), f_color, b_color)
 
